@@ -1,22 +1,9 @@
 const express = require('express');
-
+const authController = require('../controller/auth'); //providing path to the controller
 const router = express.Router(); //using express for making router
 
-// GET method
-router.get('/', (req,res) =>{
-    res.send({
-        type: 'GET'
-    });
-});
+router.post('/register', authController.register); // we are using register funtion which is inside auth.js
 
-//adding to db using post
-router.post('/register',(req,res) =>{
-    res.send({
-        type : 'POST',
-        name: req.body.name,
-        age: req.body.age
-
-    });
-});
+//router.post('/login', authController.login); // we are using login funtion which is inside auth.js
 
 module.exports = router;
