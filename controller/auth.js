@@ -31,7 +31,7 @@ exports.register = (req,res) => {
             }
             else{
                 console.log(results);
-                return res.send({
+                res.send({
                     message: 'Sucessfully registered.'
                 });
             }
