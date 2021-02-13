@@ -11,6 +11,6 @@ router.post('/register', authController.register); // we are using register funt
 //         message: 'I am the King'
 //     });
 // })
-//router.post('/login', authController.login); // we are using login funtion which is inside auth.js
+router.post('/login', authController.login); // we are using login funtion which is inside auth.js
 
 module.exports = router;
