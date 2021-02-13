@@ -1,4 +1,6 @@
 const db = require('../database');
+const jwt =require ('jsonwebtoken');
+
 
 const bcrypt = require('bcryptjs'); //bcrypt for hashing the password for preotection
 
@@ -38,6 +40,47 @@ exports.register = (req,res) => {
         })
     });
 }
-exports.login=(req,res)=>{
-    const {username,password} = req.body;
-}
+exports.login= async (req,res) => {
+    try{
+        
+        const {email,password} = req.body;
+
+        if(!email || !password) {
+            return res.status(400).send({
+                message: "Please provide an email and password"
+            }
+            )
+        }
+
+        db.query('SELECT * from users WHERE email = ?', [email], async(error, results)=>{
+            console.log(results);
+            if(!results || !(await bcrypt.compare(password,results[0].password))){
+                res.status(401).send({
+                    message: "Incorrect email or password"
+                })
+            }
+            else{
+                const id= results[0].id
+                const username= results[0].name
+
+                // // const token = jwt.sign({id},process.env.JWT_SECRET, {
+                // //     expiresIn: process.env.JWT_EXPIRES_IN //expiry time of token
+                // })
+                res.send({
+                    id: id,
+                    name: username
+                    // token: token 
+                })
+
+                
+
+            }
+        })
+    }
+    catch(error){
+        console.log(error);
+    }
+
+    }
+    
+
