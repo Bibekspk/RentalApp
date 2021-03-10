@@ -45,24 +45,15 @@ exports.login= async (req,res) => {
     try{
         
         const {email,password} = req.body;
-
-        if(!email || !password) {
-            return res.status(400).send({
-                message: "Please provide an email and password"
-            }
-            )
-        }
-
         db.query('SELECT * from users WHERE email = ?', [email], async(error, results)=>{
-            console.log(results);
-            // if(results==0){
-            //     res.send({
-            //         message: "Acocunt doesnot exists."
-            //     })
-            // }
+            if(results==0){
+             return res.send({
+                    message: "Acocunt doesnot exists."
+                })
+            }
 
             if(!results || !(await bcrypt.compare(password,results[0].password))){
-                res.status(401).send({
+              return  res.send({
                     message: "Incorrect email or password"
                 })
             }
@@ -78,7 +69,6 @@ exports.login= async (req,res) => {
                     name: username,
                     token: token 
                 })
-                const userid= res.id;
 
                 
 
@@ -102,7 +92,7 @@ exports.getUser=(req,res)=>{
                     message: "Some error occured"
                 })
               }
-              if(results.length<=0){
+              if(results<=0){
                   return res.send({
                       message: "No data in the database"
                   })
