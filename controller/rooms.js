@@ -1,5 +1,6 @@
 const db = require('../database');
 
+
 exports.addRoom = (req,res) => {
     const id = req.params.userId
 const {roomtitle,roomno,description,address,price,parking,kitchen,water} = req.body;
@@ -14,6 +15,7 @@ try{
             })
         }
         else{
+            // addImage(req,res);
             res.send({
                 success: true,
                 message: "Room have been successfully added",
@@ -26,7 +28,6 @@ catch(error){
     console.log(error);
 }
 }
-
 
 exports.getRoom =(req,res) =>{
     try{
