@@ -9,6 +9,6 @@ const router = express.Router();
 router.post('/singleupload', TokenController.checkToken, imageUploader.imgupload.single('image'),imageController.singleupload);
 
 
-router.post('/multipleUploads', TokenController.checkToken, imageUploader.imgupload.array('image', 15),imageController.multipleupload);
+router.post('/multipleuploads', TokenController.checkToken, imageUploader.imgupload.array('image', 15),imageController.multipleupload);
 
 module.exports = router;
