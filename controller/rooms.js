@@ -3,15 +3,16 @@ const db = require('../database');
 
 exports.addRoom = (req,res) => {
     const id = req.params.userId
-const {roomtitle,roomno,description,address,price,parking,kitchen,water} = req.body;
+const {roomTitle,roomno,description,address,price,parking,bathroom} = req.body;
 console.log(req.body) //storing all the value from form to varialbes
 try{
     db.query("INSERT INTO rooms SET ?", 
-    {userId:id, roomTitle: roomtitle, roomno: roomno, description: description, address: address, price: price, parking: parking, kitchen: kitchen, water: water},(error,results) =>{
+    {userId:id, roomTitle: roomTitle, roomno: roomno, description: description, address: address, price: price, parking: parking, bathroom: bathroom},(error,results) =>{
         if(error){
-            res.send({
+           return res.send({
                 success: false,
-                message: "Error while registering room"
+                message: "Error while registering room",
+                error: error
             })
         }
         else{
@@ -19,6 +20,7 @@ try{
             res.send({
                 success: true,
                 message: "Room have been successfully added",
+                roomid : results.insertId,
                 data: results
             })
         }

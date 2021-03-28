@@ -1,16 +1,16 @@
 const jwt =require ('jsonwebtoken');
 
 function checkToken(req, res,next){
-    let token = req.get("authorization");
+    let token = req.get("Authorization");
     if (token) {
         //Removing the bearer from the token
-        token = token.slice(7); //actual token for use
+        // token = token.slice(7); //actual token for use
         jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
             if (error) {
-                console.log(error)
                 res.json({
                     sucsess: false,
-                    message: "Invalid Token"
+                    message: "Invalid Token",
+                    error : error
                 });
             }else{
                 next();

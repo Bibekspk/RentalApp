@@ -81,7 +81,6 @@ exports.login= async (req,res) => {
 
     }
 
-
 exports.getUser=(req,res)=>{
     try{
         db.query('SELECT * from users',

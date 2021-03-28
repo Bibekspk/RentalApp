@@ -20,10 +20,10 @@ function singleImg (req,res) {
 function multipleImg (req,res) {
     // var fileInfo = req.file;
 
-    if (req.file.filename) {
+    if (req.files) {
         res.status(201).json({
             message: "Image uploaded successfully",
-            url: req.file.filename
+            url: req.files
         });
         
     } else {
