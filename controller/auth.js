@@ -58,7 +58,7 @@ exports.login= async (req,res) => {
                 })
             }
             else{
-                const id= results[0].id
+                const id= results[0].id.toString();
                 const username= results[0].name
 
                 const token = jwt.sign({id},process.env.JWT_SECRET, {
