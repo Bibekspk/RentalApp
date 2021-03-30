@@ -1,4 +1,6 @@
 const db = require("../database");
+const path  = require('path');
+
 
 
 function singleImg (req,res) {
@@ -80,10 +82,14 @@ function getImage(req, res) {
             }
             var resBody = results
             console.log(resBody);
+
             for ( let i = 0; i<resBody.length; i++) {
                 const element = resBody[i];
-                imagenames.push(element.image)
-                console.log(element);
+                //
+                // imagenames.push(element.image)
+                imagenames.push(`http://localhost:5000/static/${element.image}`)
+
+                // console.log(element);
                 // console.log("Images name" + imagenames);
 
               
@@ -104,3 +110,4 @@ module.exports ={
     getImage
 };
 
+//express static and path 
