@@ -11,4 +11,7 @@ router.post('/singleupload', TokenController.checkToken, imageUploader.imgupload
 
 router.post('/:userId/:roomId/multipleuploads', TokenController.checkToken, imageUploader.imgupload.array('image', 15),imageController.multipleupload);
 
+router.get('/getMultipleimg/:roomId',imageController.getImage);
+
+router.get('/getimg/:id',imageController.getImageID)
 module.exports = router;
