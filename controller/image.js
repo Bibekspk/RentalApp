@@ -49,20 +49,8 @@ function multipleImg (req,res) {
             success: false
         })
     }
-  
-// function getImageData= (property_id, callBack) => {
-//         pool.query(
-//             `SELECT * FROM IMAGES WHERE property_id = ?`,
-//             [property_id],
-//             (error, results) => {
-//                 if (error) {
-//                     return callBack(error);
-//                 }
-//                 console.log('Sucessfully Get');
-//                 return callBack(null, results);
-//             });
-//     }
 }
+
 function getImage(req, res) {
     const roomid = req.params.roomId;
     const imagenames = [];
@@ -87,15 +75,15 @@ function getImage(req, res) {
                 const element = resBody[i];
                 //
                 // imagenames.push(element.image)
-                imagenames.push(`http://localhost:5000/static/${element.image}`)
+                imagenames.push(`http://10.0.2.2:5000/static/${element.image}`)
 
                 // console.log(element);
                 // console.log("Images name" + imagenames);
 
               
             }
-            res.send({
-                data: imagenames});
+            res.json({
+                name: imagenames});
         
         })
     }
@@ -107,7 +95,7 @@ module.exports ={
     singleupload : singleImg,
     multipleupload: multipleImg,
     getImageID,
-    getImage
+    getImage,
 };
 
 //express static and path 

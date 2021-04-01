@@ -1,4 +1,6 @@
 const db = require('../database');
+const { getImageData,getProperty } = require('../services/services');
+
 
 
 exports.addRoom = (req,res) => {
@@ -133,3 +135,50 @@ exports.updateRoomById =(req,res) =>{
         console.log(error);
     }
 }
+
+exports.getPropertyDetail= (req, res) => {
+    const prop_id = [];
+    const imageData = [];
+    const body = req.body;
+    getProperty((error, results) => {
+        // console.log(typeof getProperty);
+        if (error) {
+            return console.log(error);
+        }
+        if (results.length <= 0) {
+            res.status(200).json({
+                message: "There is no data in table"
+            });
+        }
+        console.log('this is response data ! ==> ', results);
+        var resData = results;
+        for (let index = 0; index < resData.length; index++) {
+            const element = resData[index];
+            console.log("property id ==> ", element.RoomId);
+            prop_id.push(element.RoomId);
+
+            getImageData(element.RoomId, (error, results) => {
+                if (error) {
+                    res.send({ success: false });
+                }
+                var resBody = results;
+                console.log("RES BODY ==> ", results);
+                for (let index = 0; index < resBody.length; index++) {
+                    const element = resBody[index];
+                    imageData.push('http://10.0.2.2:3000/multipropertyimage/' + element.image);
+                    console.log('This is concatinate', resData, element.image);
+                }
+                console.log("This is image data ==>", imageData);
+
+            });
+            // prop_id.push(ImageData)
+            // res.status(200).json({
+            //     data: resData
+            // });
+        }
+        
+        console.log(prop_id);
+        console.log(imageData);
+    });
+}
+
