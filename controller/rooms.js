@@ -137,11 +137,8 @@ exports.updateRoomById =(req,res) =>{
 }
 
 exports.getPropertyDetail= (req, res) => {
-    const prop_id = [];
-    var imageData; 
-    var imagedata2; 
-    const fullData = [];
     const body = req.body;
+    const room_id = [];
   getProperty((error, results) => {
         if (error) {
             return console.log(error);
@@ -153,9 +150,16 @@ exports.getPropertyDetail= (req, res) => {
         }
         var resData = results; //property detail
             console.log("PropertyDetail",resData[0])
-        res.send({
-            data: results
-        })
+            for (let index = 0; index < resData.length; index++) {
+            
+                            const element = resData[index];    
+                            room_id.push(element);
+                           
+            }
+            res.send({
+                data: room_id
+            })
+            console.log(room_id);
        
     })
     
