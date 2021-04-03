@@ -6,7 +6,7 @@ const imageUploader = require('../../helpers/imageuploader');
 
 const router = express.Router();
 
-router.post('/singleupload', TokenController.checkToken, imageUploader.imgupload.single('image'),imageController.singleupload);
+router.post('/singleupload/:roomId', TokenController.checkToken, imageUploader.imgupload.single('image'),imageController.singleupload);
 
 
 router.post('/:userId/:roomId/multipleuploads', TokenController.checkToken, imageUploader.imgupload.array('image', 15),imageController.multipleupload);
