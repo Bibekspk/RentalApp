@@ -139,34 +139,37 @@ exports.updateRoomById =(req,res) =>{
 exports.getPropertyDetail= (req, res) => {
     const body = req.body;
     const room_id = [];
-  getProperty((error, results) => {
+    getProperty((error, properties) => {
         if (error) {
             return console.log(error);
         }
-        if (results.length <= 0) {
+        if (properties.length <= 0) {
             res.status(200).json({
                 message: "There is no data in table"
             });
         }
-        var resData = results; //property detail
-            for (let index = 0; index < resData.length; index++) {
-            
-                            const element = resData[index];    
-                            room_id.push(element);
-                           
-            }
-            res.send({
-                data: room_id
-            })
-            console.log(room_id);
-       
+        for (let index = 0; index < properties.length; index++) {
+            const property = properties[index];    
+            getImageData(property.RoomId, (error, images) => {
+                let imageUrls = []
+                if (!error) {
+                    imageUrls = images.map(image => {
+                        return `http://10.0.2.2:3000/multipropertyimage/${image.image}`;
+                    });
+                }
+                property.images = imageUrls;
+                res.send({
+                    data: properties
+                })
+            });
+        }
     })
     
 }
 
 
 // exports.getPropertyDetail= (req, res) => {
-//     const prop_id = [];
+//     const room_id = [];
 //     var imageData; 
 //     var imagedata2; 
 //     const fullData = [];
@@ -181,41 +184,40 @@ exports.getPropertyDetail= (req, res) => {
 //             });
 //         }
 //         var resData = results; //property detail
-//             // console.log("PropertyDetail",resData[0])
-//         // res.send({
-//         //     data: result
-//         // })
-//         for (let index = 0; index < resData.length; index++) {
-            
-//             const element = resData[index]; 
-//             // resData[index].image = imgdata       
-//             prop_id.push(element.RoomId);
+        
+//         for (let index = 0; index < resData.length; index++) { 
+// //           
+//                 var element = resData[index]; 
+                
+//                 room_id.push(element);
            
-//            var imgdata = getImageData(element.RoomId, (error, results) => {
+//         getImageData(element.RoomId, (error, results) => {
 //                 if (error) {
 //                     res.send({ success: false });
 //                 }
 //                 var resBody = results;
-//                 // console.log(results);
+//                 // console.log("Image dta "+results);
 //                 var imageData = [];
-//                 // var imgdata;
+
 //                 for (let index = 0; index < resBody.length; index++) { //images ko data
                    
 //                     const element1 = resBody[index];
 //                     imageData.push('http://10.0.2.2:3000/multipropertyimage/' + element1.image); //use path
                     
 //                     // console.log("Element"+resData);
-//                     // element.images = imageData
+                    
 //                  //promise .all () reasearch 
-//                 //  console.log("ImageData"+imageData)
+//                  element.images = imageData
+//                 console.log("Data outside "+element);
                 
 //                 }
-//                 console.log(imageData);
-//                 return imageData
+               
+
 //             })
-//             console.log("resData "+imgdata);
+           
 //             // console.log("Res data"+resData.image)
 //         }
+//         console.log("resData "+room_id);
 //     })
     
 // }
