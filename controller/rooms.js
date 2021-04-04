@@ -149,7 +149,6 @@ exports.getPropertyDetail= (req, res) => {
             });
         }
         var resData = results; //property detail
-            console.log("PropertyDetail",resData[0])
             for (let index = 0; index < resData.length; index++) {
             
                             const element = resData[index];    
