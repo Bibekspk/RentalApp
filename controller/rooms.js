@@ -1,5 +1,5 @@
 const db = require('../database');
-const { getImageData,getProperty } = require('../services/services');
+const { getImageData,getRoom } = require('../services/PropertyDao.js');
 
 
 
@@ -136,35 +136,56 @@ exports.updateRoomById =(req,res) =>{
     }
 }
 
-exports.getPropertyDetail= (req, res) => {
-    const body = req.body;
-    const room_id = [];
-    getProperty((error, properties) => {
-        if (error) {
-            return console.log(error);
-        }
-        if (properties.length <= 0) {
-            res.status(200).json({
-                message: "There is no data in table"
-            });
-        }
-        for (let index = 0; index < properties.length; index++) {
-            const property = properties[index];    
-            getImageData(property.RoomId, (error, images) => {
-                let imageUrls = []
-                if (!error) {
-                    imageUrls = images.map(image => {
-                        return `http://10.0.2.2:3000/multipropertyimage/${image.image}`;
-                    });
-                }
-                property.images = imageUrls;
-                res.send({
-                    data: properties
-                })
-            });
-        }
+// exports.getPropertyDetail= (req, res) => {
+//     const results = []
+//     getProperty((error, properties) => {
+//         if (error) {
+//             return console.log(error);
+//         }
+//         if (properties.length <= 0) {
+//             res.status(200).json({
+//                 message: "There is no data in table"
+//             });
+//         }
+//         for (let index = 0; index < properties.length; index++) {
+//             const property = properties[index];    
+//             getImageData(property.RoomId, (error, images) => {
+//                 let imageUrls = []
+//                 if (!error) {
+//                     imageUrls = images.map(image => {
+//                         return `http://10.0.2.2:3000/multipropertyimage/${image.image}`;
+//                     });
+//                 }
+//                 property.images = imageUrls;
+//                 results.push(property);
+//             });
+//         }
+//         res.send({
+//           data: results
+//         })
+//     })
+// }
+
+exports.getRoomDetail = async (req, res) => {
+    const results = [];
+    const properties = await getRoom();
+    if (properties.length <= 0) {
+      res.status(200).json({
+        message: "There is no data in table"
+      });
+    }
+    for (let index = 0; index < properties.length; index++) {
+      const property  = properties[index];    
+      const images    = await getImageData(property.RoomId);
+      const imageUrls = images.map(image => {
+                          return `http://10.0.2.2:3000/multipropertyimage/${image.image}`;
+                        });
+      property.images = imageUrls;
+      results.push(property);
+    }
+    res.send({
+      data: results
     })
-    
 }
 
 
