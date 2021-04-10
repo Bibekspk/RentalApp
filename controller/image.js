@@ -1,6 +1,6 @@
 const db = require("../database");
 const path  = require('path');
-const { addMainImageName } = require("../services/services");
+// const { addMainImageName } = require("../services/services");
 
 
 function singleImg (req,res) {

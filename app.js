@@ -2,6 +2,7 @@ const express = require("express");
 const route = require('./routes/auth/route');
 const roomroute = require('./routes/room/roomroute')
 const imgroute = require('./routes/images/imagesroute')
+const requestroute = require('./routes/request/requestRoute');
 const path = require('path');
 
 //improting mysql
@@ -20,8 +21,7 @@ app.use('/v1',roomroute);
 
 app.use('/v2',imgroute);
 
-
-
+app.use('/v2',requestroute);
 
 
 app.listen(5000, () =>{

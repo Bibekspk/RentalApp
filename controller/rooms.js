@@ -1,5 +1,7 @@
 const db = require('../database');
 const { getImageData,getRoom } = require('../services/PropertyDao.js');
+const {getUser} = require('../services/userDao');
+
 
 
 
@@ -181,6 +183,8 @@ exports.getRoomDetail = async (req, res) => {
                           return `http://10.0.2.2:3000/multipropertyimage/${image.image}`;
                         });
       property.images = imageUrls;
+      const user = await getUser(property.userId);
+      property.userDetail = user[0];
       results.push(property);
     }
     res.send({
