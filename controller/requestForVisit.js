@@ -1,6 +1,6 @@
 const db = require("../database");
 
-function siteVisitRequest(res,req){
+exports.siteVisitRequest=(req,res)=>{
     console.log("Room");
     var id1 = req.params.roomId 
     var id2 = req.params.userId;
@@ -35,8 +35,4 @@ function siteVisitRequest(res,req){
    catch(error){
           console.log(error);
       }
-}
-
-module.exports={
-    siteVisitRequest
 }
