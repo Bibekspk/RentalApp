@@ -1,18 +1,22 @@
 const db = require("../database");
 
-exports.siteVisitRequest=(res,req)=>{
+function siteVisitRequest(res,req){
     console.log("Room");
-    const roomId = req.params.roomID
-    const userId = req.params.userID;
-    console.log(userId)
+    var id1 = req.params.roomId 
+    var id2 = req.params.userId;
+    // console.log(userId)
  
     const {siteVisit,roomPrice,inquiry,date} = req.body
     try{
-        db.query(`INSERT INTO REQUEST (RoomID, UserID, SiteVisit, Priceinquiry, DateforVisit,VisitDetail)
-        VALUES (?,?,?,?,?)`,
-                  [
-                  roomId,userId,siteVisit,roomPrice,date,inquiry
-                  ],(error,results)=>{
+        db.query(
+        //     `INSERT INTO REQUEST (RoomID, UserID, SiteVisit, Priceinquiry, DateforVisit,VisitDetail)
+        // VALUES (?,?,?,?,?,?)`,
+        "INSERT INTO request SET ?",
+        {UserID:id2, RoomID:id1, SiteVisit:siteVisit, Priceinquiry: roomPrice, DateforVisit: date, VisitDetail:inquiry}
+                //   [
+                //   roomId,userId,siteVisit,roomPrice,date,inquiry
+                //   ]
+                  ,(error,results)=>{
                       if(error){
                            res.send({
                               error: error,
@@ -31,4 +35,8 @@ exports.siteVisitRequest=(res,req)=>{
    catch(error){
           console.log(error);
       }
+}
+
+module.exports={
+    siteVisitRequest
 }
