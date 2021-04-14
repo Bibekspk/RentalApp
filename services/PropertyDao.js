@@ -14,6 +14,22 @@ function getRoom ()  {
       )
     })
   }
+
+  function getRoombyID (roomid)  {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM ROOMS WHERE RoomID = ?`,[roomid],
+        (error, results) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(results);
+        }
+      )
+    })
+  }
+
+  
   function getImageData(id) {
     return new Promise((resolve, reject) => {
       db.query(
@@ -30,5 +46,6 @@ function getRoom ()  {
   }
   module.exports = {
     getRoom,
-    getImageData
+    getImageData,
+    getRoombyID
   }

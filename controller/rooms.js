@@ -180,7 +180,7 @@ exports.getRoomDetail = async (req, res) => {
       const property  = properties[index];    
       const images    = await getImageData(property.RoomId);
       const imageUrls = images.map(image => {
-                          return `http://10.0.2.2:3000/multipropertyimage/${image.image}`;
+                          return `http://10.0.2.2:5000/multipropertyimage/${image.image}`;
                         });
       property.images = imageUrls;
       const user = await getUser(property.userId);

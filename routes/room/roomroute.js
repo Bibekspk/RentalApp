@@ -11,7 +11,9 @@ router.get("/:userID/rooms/:roomID", roomController.getRoomById);
 router.get("/getRoomDetail", roomController.getRoomDetail);
 router.put("/:userID/rooms/:roomID", roomController.updateRoomById);
 
+//fav room details
 router.post("/favRoom/:roomId/:userId",favouriteController.favRooms);
+router.get("/favRooms/:userID",favouriteController.getFavDetails);
 router.delete("/delfavRoom/:roomId/:userId",favouriteController.removeFav);
 
 
