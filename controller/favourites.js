@@ -99,13 +99,9 @@ exports.getFavDetails = async (req, res) => {
     }
     console.log(rooms)
     for (let index = 0; index < rooms.length; index++) {
-
-        var room ={}
-        // console.log("Room "+room.id);
         var roomdetails = await getRoombyID(rooms[index].RoomID)
         var user = await getUser(roomdetails[0].userId)
         var roomdetail = roomdetails[0];
-        // room.roomdetails = roomdetails[0]
         roomdetail.userDetails = user[0]
         results.push(roomdetail);
 
