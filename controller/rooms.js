@@ -1,5 +1,5 @@
 const db = require('../database');
-const { getImageData,getRoom } = require('../services/PropertyDao.js');
+const { getImageData,getRoom,searchRoom } = require('../services/PropertyDao.js');
 const {getUser} = require('../services/userDao');
 
 
@@ -191,6 +191,36 @@ exports.getRoomDetail = async (req, res) => {
       data: results
     })
 }
+
+exports.getSearchedRoom = async (req, res) => {
+    const location = req.params.location;
+    const start = req.params.start;
+    const end = req.params.end;
+    const results = [];
+    const properties = await searchRoom(location,start,end);
+    if (properties.length <= 0) {
+      res.status(200).json({
+        message: "There is no data in table"
+      });
+    }
+    else{
+    for (let index = 0; index < properties.length; index++) {
+      const property  = properties[index];    
+      const images    = await getImageData(property.RoomId);
+      const imageUrls = images.map(image => {
+                          return `http://10.0.2.2:5000/multipropertyimage/${image.image}`;
+                        });
+      property.images = imageUrls;
+      const user = await getUser(property.userId);
+      property.userDetail = user[0];
+      results.push(property);
+    }
+    res.send({
+      data: results
+    })
+}
+}
+
 
 
 // exports.getPropertyDetail= (req, res) => {

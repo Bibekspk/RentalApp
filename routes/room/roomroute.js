@@ -16,6 +16,9 @@ router.post("/favRoom/:roomId/:userId",favouriteController.favRooms);
 router.get("/favRooms/:userID",favouriteController.getFavDetails);
 router.delete("/delfavRoom/:roomId/:userId",favouriteController.removeFav);
 
+//search room details 
+router.get("/searchedRoom/:location/:start/:end",roomController.getSearchedRoom);
+
 
 
 

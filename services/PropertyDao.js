@@ -44,8 +44,25 @@ function getRoom ()  {
       );
     });
   }
+
+  function searchRoom(location,start,end){
+    var startprice = parseInt(start);
+    var endprice = parseInt(end);
+    return new Promise((resolve,reject)=>{
+        db.query(`SELECT * from rooms WHERE address LIKE ? AND price BETWEEN ? AND ?`,[location,startprice,endprice],(error,results)=>{
+            if(error){
+                reject(error);
+            }
+            else{
+                resolve(results);
+            }
+        })
+    })
+}
+
   module.exports = {
     getRoom,
     getImageData,
-    getRoombyID
+    getRoombyID,
+    searchRoom
   }
