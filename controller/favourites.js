@@ -97,7 +97,8 @@ exports.getFavDetails = async (req, res) => {
             message: "No data found"
         })
     }
-    console.log(rooms)
+    // console.log(rooms);
+    else{
     for (let index = 0; index < rooms.length; index++) {
         var roomdetails = await getRoombyID(rooms[index].RoomID)
         var user = await getUser(roomdetails[0].userId)
@@ -111,6 +112,6 @@ exports.getFavDetails = async (req, res) => {
         // success: true,
         data: results 
     })
-    
+}
     
 }

@@ -49,7 +49,7 @@ function getRoom ()  {
     var startprice = parseInt(start);
     var endprice = parseInt(end);
     return new Promise((resolve,reject)=>{
-        db.query(`SELECT * from rooms WHERE address LIKE ? AND price BETWEEN ? AND ?`,[location,startprice,endprice],(error,results)=>{
+        db.query(`SELECT * from rooms WHERE LOCATE(?,address) AND price BETWEEN ? AND ?`,[location,startprice,endprice],(error,results)=>{
             if(error){
                 reject(error);
             }
