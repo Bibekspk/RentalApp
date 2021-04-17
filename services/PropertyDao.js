@@ -14,6 +14,20 @@ function getRoom ()  {
       )
     })
   }
+  function getRoomByUserID (id)  {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM ROOMS WHERE userId = ?`,
+        [id],
+        (error, results) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(results);
+        }
+      )
+    })
+  }
 
   function getRoombyID (roomid)  {
     return new Promise((resolve, reject) => {
@@ -49,7 +63,7 @@ function getRoom ()  {
     var startprice = parseInt(start);
     var endprice = parseInt(end);
     return new Promise((resolve,reject)=>{
-        db.query(`SELECT * from rooms WHERE LOCATE(?,address) AND price BETWEEN ? AND ?`,[location,startprice,endprice],(error,results)=>{
+        db.query(`SELECT * from rooms WHERE (address LIKE "${location + "%"}") AND (price BETWEEN ? AND ?)`,[startprice,endprice],(error,results)=>{
             if(error){
                 reject(error);
             }
@@ -64,5 +78,6 @@ function getRoom ()  {
     getRoom,
     getImageData,
     getRoombyID,
-    searchRoom
+    searchRoom,
+    getRoomByUserID
   }

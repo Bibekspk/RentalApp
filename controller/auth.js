@@ -5,7 +5,7 @@ const jwt =require ('jsonwebtoken');
 const bcrypt = require('bcryptjs'); //bcrypt for hashing the password for preotection
 
 exports.register = (req,res) => {
-    const {name, email,password, passwordconfirm, phone,isAdmin} = req.body; //storing all the value from form to varialbes
+    const {name, email,password, passwordconfirm, phone,address,isAdmin} = req.body; //storing all the value from form to varialbes
 
     db.query('SELECT email from users WHERE email = ?',[email], async(error,results) => { //we are suing async due to password await code
         if(error){
@@ -27,7 +27,7 @@ exports.register = (req,res) => {
         console.log(hashedpassword);
 
         //inserting into db  // contact: phone here contact is of db and phone is from forntend or form
-        db.query('INSERT INTO users SET ?', {name:name , email: email, password: hashedpassword, contact:phone,isAdmin:isAdmin}, (error,results) =>{
+        db.query('INSERT INTO users SET ?', {name:name , email: email, password: hashedpassword, contact:phone,isAdmin:isAdmin,address:address}, (error,results) =>{
             if(error){
                 console.log(error);
             }
@@ -81,7 +81,7 @@ exports.login= async (req,res) => {
 
     }
 
-exports.getUser=(req,res)=>{
+exports.getUsers=(req,res)=>{
     try{
         db.query('SELECT * from users',
          [],
@@ -111,4 +111,33 @@ exports.getUser=(req,res)=>{
 
 }
 
+exports.updateUser = (req,res) => {
+    const id = req.params.userID;
+    const {name, email, phone,address,isAdmin} = req.body; //storing all the value from form to varialbes
 
+    db.query('SELECT email from users WHERE UserID = ?',[id], async(error,results) => { //we are suing async due to password await code
+        if(error){
+            console.log(error);
+        }
+        if(results.length <= 0){ //result is an array so when an array have 2 same email then return is used ot terminate 
+            return res.send({ //here return is to end code if 2 same user are found
+                message : 'User not registered!!!'
+            });
+            
+        }else{
+        //inserting into db  // contact: phone here contact is of db and phone is from forntend or form
+        db.query('UPDATE INTO users SET ?', {name:name , email: email,  contact:phone,isAdmin:isAdmin,address:address}, (error,results) =>{
+            if(error){
+                console.log(error);
+            }
+            else{
+                console.log(results);
+                res.send({
+                    message: 'Sucessfully Edited.',
+                    // data: results
+                });
+            }
+        })
+    }
+    });
+}

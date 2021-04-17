@@ -19,6 +19,9 @@ router.delete("/delfavRoom/:roomId/:userId",favouriteController.removeFav);
 //search room details 
 router.get("/searchedRoom/:location/:start/:end",roomController.getSearchedRoom);
 
+//listed propertires of users
+router.get("/getRooms/:userID",roomController.getRoomsByUserId);
+
 
 
 
