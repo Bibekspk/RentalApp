@@ -1,16 +1,16 @@
 const db = require("../database");
-const path  = require('path');
-// const { addMainImageName } = require("../services/services");
+const path = require('path');
+const { updateImages } = require("../services/ImageDao");
 
 
-function singleImg (req,res) {
+function singleImg(req, res) {
     var fileInfo = req.file;
     var roomId = req.params.roomId;
     // console.log("Roomid"+roomId)
     // console.log("Single File",fileInfo);
     if (req.file.filename) {
         var imgUrl = 'http://10.0.2.2:5000/static/' + fileInfo.filename;
-        db.query(`UPDATE rooms SET thumb_Img = ? WHERE RoomId = ?`,[imgUrl, roomId], (error, results) => {
+        db.query(`UPDATE rooms SET thumb_Img = ? WHERE RoomId = ?`, [imgUrl, roomId], (error, results) => {
             if (error) {
                 res.status(500).json({
                     message: "Error during insertion of thumbnail image"
@@ -30,18 +30,18 @@ function singleImg (req,res) {
     }
 }
 
-function multipleImg (req,res) {
+function multipleImg(req, res) {
     var fileInfo = req.files;
     var userId = req.params.userId;
     var roomId = req.params.roomId;
-    if(fileInfo.length > 0){
-        for(i=0;i<fileInfo.length;i++){
+    if (fileInfo.length > 0) {
+        for (i = 0; i < fileInfo.length; i++) {
             const element = fileInfo[i];
             var imgUrl = 'http://10.0.2.2:5000/static/' + element.filename;
-            db.query(`INSERT INTO IMAGE (roomId,userId,image) VALUES(?,?,?)`,[
-                roomId,userId,imgUrl
-            ],(error,results)=>{
-                if(error){
+            db.query(`INSERT INTO IMAGE (roomId,userId,image) VALUES(?,?,?)`, [
+                roomId, userId, imgUrl
+            ], (error, results) => {
+                if (error) {
                     res.send({
                         success: false,
                         message: "Error occured"
@@ -54,13 +54,64 @@ function multipleImg (req,res) {
             })
         }
     }
-    else{
+    else {
         res.send({
             message: "Please selec images",
             success: false
         })
     }
 }
+
+ function updatemultipleImage (req, res) {
+    var fileInfo = req.files;
+    var userId = req.params.userId;
+    var roomId = req.params.roomId;
+    console.log("userID"+userId);
+    console.log("roomID  "+userId);
+    
+    db.query('DELETE FROM IMAGE WHERE userId = ? AND roomId =?', [userId,roomId], (error, results) => {
+        if (error) {
+            res.send({
+                success: false,
+                message: "Image not deleted"
+            })
+        }
+        else {
+            if (fileInfo.length > 0) {
+                for (i = 0; i < fileInfo.length; i++) {
+                    const element = fileInfo[i];
+                    var imgUrl = 'http://10.0.2.2:5000/static/' + element.filename;
+                    const images = updateImages(roomId,userId,imgUrl);
+                    // db.query(`INSERT INTO IMAGE (roomId,userId,image) VALUES(?,?,?)`, [
+                    //     roomId, userId, imgUrl
+                    // ], (error, results) => {
+                    //     if (error) {
+                    //         res.send({
+                    //             success: false,
+                    //             message: "Error occured"
+                    //         })
+                    //     }
+                    //     res.send({
+                    //         success: true,
+                    //         message: "Successfully Added"
+                    //     })
+                    // })
+                    res.send({
+                                success: true,
+                                message: "Successfully Added"
+                            })
+                }
+            }
+            else {
+                res.send({
+                    message: "Please select images",
+                    success: false
+                })
+            }
+        }
+    } )
+ }    
+
 
 function getImage(req, res) {
     const roomid = req.params.roomId;
@@ -82,7 +133,7 @@ function getImage(req, res) {
             var resBody = results
             console.log(resBody);
 
-            for ( let i = 0; i<resBody.length; i++) {
+            for (let i = 0; i < resBody.length; i++) {
                 const element = resBody[i];
                 //
                 // imagenames.push(element.image)
@@ -91,22 +142,24 @@ function getImage(req, res) {
                 // console.log(element);
                 // console.log("Images name" + imagenames);
 
-              
+
             }
             res.json({
-                name: imagenames});
-        
+                name: imagenames
+            });
+
         })
-    }
+}
 
 function getImageID(req, res) {
     res.sendFile('F:/fyp project/Rentalapp/backend/uploads/' + req.params.id);
 }
-module.exports ={
-    singleupload : singleImg,
+module.exports = {
+    singleupload: singleImg,
     multipleupload: multipleImg,
     getImageID,
     getImage,
+    updatemultipleImage
 };
 
 //express static and path 
