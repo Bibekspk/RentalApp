@@ -28,7 +28,20 @@ function updateImages(roomid,userid,image){
     })
 }
 
+function delImage(userId,roomId){
+    return new Promise((resolve,reject)=>{
+        db.query('DELETE from image WHERE userId = ? AND roomId =?',[userId,roomId],(error,results)=>{
+            if(error){
+                reject(error);
+            }
+            else{
+                resolve(results);
+            }
+        })
+    })
+}
+
 module.exports={
     updateImages,
-    addMainImageName
+    addMainImageName,delImage
 }

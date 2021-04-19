@@ -23,6 +23,8 @@ router.get("/searchedRoom/:location/:start/:end",roomController.getSearchedRoom)
 //listed propertires of users
 router.get("/getRooms/:userID",roomController.getRoomsByUserId);
 
+//delete rooms 
+router.delete("/:userID/:roomID/delRoom",roomController.delRoom);
 
 
 

@@ -91,13 +91,12 @@ exports.getFavDetails = async (req, res) => {
     var userid = req.params.userID
     const results = [];
     var rooms = await getFavRoombyUserID(userid);
-    if(rooms.length<=0){
+    if(rooms.length==0){
         res.send({
             success: false,
             message: "No data found"
         })
     }
-    // console.log(rooms);
     else{
     for (let index = 0; index < rooms.length; index++) {
         var roomdetails = await getRoombyID(rooms[index].RoomID)

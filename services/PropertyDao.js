@@ -60,9 +60,13 @@ function getRoom ()  {
   }
 
   function searchRoom(location,start,end){
-    var startprice = parseInt(start);
-    var endprice = parseInt(end);
-    return new Promise((resolve,reject)=>{
+    if(start == null || end== null){
+      console.log("Provide values");
+    }
+    else{
+      var startprice = parseInt(start);
+     var endprice = parseInt(end);
+      return new Promise((resolve,reject)=>{
         db.query(`SELECT * from rooms WHERE (address LIKE "${location + "%"}") AND (price BETWEEN ? AND ?)`,[startprice,endprice],(error,results)=>{
             if(error){
                 reject(error);
@@ -71,7 +75,7 @@ function getRoom ()  {
                 resolve(results);
             }
         })
-    })
+    })}
 }
 
   module.exports = {

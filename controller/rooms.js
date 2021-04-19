@@ -1,5 +1,8 @@
 const db = require('../database');
+const { deleteFavRoom } = require('../services/favRoomDao');
+const { delImage } = require('../services/ImageDao');
 const { getImageData, getRoom, searchRoom, getRoomByUserID } = require('../services/PropertyDao.js');
+const { delRequest } = require('../services/services');
 const { getUser } = require('../services/userDao');
 
 
@@ -207,20 +210,83 @@ exports.getRoomDetail = async (req, res) => {
             message: "There is no data in table"
         });
     }
-    for (let index = 0; index < properties.length; index++) {
-        const property = properties[index];
-        const images = await getImageData(property.RoomId);
-        const imageUrls = images.map(image => {
-            return `http://10.0.2.2:5000/multipropertyimage/${image.image}`;
-        });
-        property.images = imageUrls;
-        const user = await getUser(property.userId);
-        property.userDetail = user[0];
-        results.push(property);
+    else {
+        for (let index = 0; index < properties.length; index++) {
+            const property = properties[index];
+            const images = await getImageData(property.RoomId);
+            const imageUrls = images.map(image => {
+                return `http://10.0.2.2:5000/multipropertyimage/${image.image}`;
+            });
+            property.images = imageUrls;
+            const user = await getUser(property.userId);
+            property.userDetail = user[0];
+            results.push(property);
+        }
+        res.send({
+            data: results
+        })
     }
-    res.send({
-        data: results
+}
+
+
+exports.delRoom = async (req, res) => {
+    const userId = req.params.userID;
+    const roomId = req.params.roomID;
+    const images = await delImage(userId, roomId);
+    const request = await delRequest(userId, roomId);
+    const favrooms = await deleteFavRoom(roomId);
+
+    db.query("DELETE from rooms where userId = ? AND RoomId = ?", [userId, roomId], (error, results) => {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            res.send({
+                message: "Successfully Removed"
+            })
+        }
     })
+    // db.query('DELETE from image WHERE userId = ? AND roomId =?',[userId,roomId],(error,results)=>{
+    //     if(error){
+    //         res.send({
+    //         success: false,
+    //         message : ""
+    //         })
+    //     }else{
+    //         db.query("DELETE from rooms where userId = ? AND RoomId = ?",[userId,roomId],(error,results)=>{
+    //             if(error){
+    //                 console.log(error);
+    //             }
+    //             else{
+    //                 res.send({
+    //                     message: "Successfully Removed"
+    //                 })
+    //             }
+    //         })
+    //     }
+    // })
+
+    // const results = [];
+    // const properties = await getRoom();
+    // if (properties.length <= 0) {
+    //     res.status(200).json({
+    //         message: "There is no data in table"
+    //     });
+    // }
+    // for (let index = 0; index < properties.length; index++) {
+    //     const property = properties[index];
+    //     const images = await getImageData(property.RoomId);
+    //     const imageUrls = images.map(image => {
+    //         return `http://10.0.2.2:5000/multipropertyimage/${image.image}`;
+    //     });
+    //     property.images = imageUrls;
+    //     const user = await getUser(property.userId);
+    //     property.userDetail = user[0];
+    //     results.push(property);
+    // }
+    // res.send({
+    //     data: results
+    // })
 }
 
 exports.getSearchedRoom = async (req, res) => {
@@ -250,6 +316,7 @@ exports.getSearchedRoom = async (req, res) => {
             data: results
         })
     }
+
 }
 
 
