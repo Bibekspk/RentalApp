@@ -1,0 +1,55 @@
+// Define variables for primary colors
+$primary_1: #5850ec;
+$primary_2: #5227cc;
+$primary_3: #ebe5fc;
+$seconday_1: #6d6d6d;
+$fontsize: 18px;
+$fontfamily: "Poppins", sans-serif;
+$textcolor: #0000;
+$fontsize: 14px;
+$buttoncolor: #5850ec;
+* {
+  font-family: $fontfamily;
+}
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #1A1A1D;
+}
+#header {
+  width: 100%;
+}
+.row-content {
+  padding-top: 30px;
+}
+.rightborder {
+  box-shadow: 11px 12px 4px grey;
+}
+#landbtn {
+  background-color: white !important;
+  border-color: $primary_1 !important;
+  color: $primary_1;
+}
+#landbtn:hover,
+#landbtn:active {
+  background-color: $primary_1 !important;
+  color: white;
+}
+#landbtn-pri {
+  background-color: $buttoncolor;
+  border-color: $buttoncolor;
+}
+#landbtn-pri:hover,
+#landbtn-pri:active {
+  background-color: $primary_2;
+  color: white;
+}
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}

@@ -1,0 +1,19 @@
+$primary-color: #5850ec;
+.form-control {
+  box-shadow: 0 4px 4px 0 #cdcdcd;
+}
+.reg {
+  border-color: $primary-color;
+  color: $primary-color;
+  box-shadow: 0 4px 4px 0 #cdcdcd;
+}
+.reg:hover {
+  background-color: $primary-color;
+}
+h3 {
+  color: #cdcdcd;
+  font-weight: 500;
+}
+.text-color {
+  color: $primary-color;
+}

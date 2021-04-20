@@ -1,0 +1,24 @@
+$primary_1: #5850ec;
+$primary_2: #5227cc;
+$primary_3: #ebe5fc;
+$seconday_1: #6d6d6d;
+$fontsize: 18px;
+$fontfamily: "Poppins", sans-serif;
+$textcolor: #0000;
+$fontsize: 14px;
+$buttoncolor: #5850ec;
+
+#btnlogin {
+    background-color: $buttoncolor;
+    transition: 0.5s;
+    letter-spacing: 1px;
+    display: inline-block;
+    border-radius: 4px;
+  }
+#btnlogin:hover {
+    background-color: $primary_2;
+    color: white;
+}
+body{
+    color: #FFFFFF;
+}
