@@ -1,6 +1,6 @@
 const db = require('../database');
-// const jwt =require ('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { delfavbyID, delImagesbyID, delReqbyID, delroombyID,delUser } = require('../services/userDao');
 
 exports.updateUser = (req,res) => {
     const id = parseInt(req.params.userID);
@@ -51,4 +51,43 @@ exports.getUser= async(req,res) =>{
     catch(error){
         console.log(error);
     }
+}
+
+exports.getUsers = async(req,res) =>{
+    const id = parseInt(req.params.userID)
+    try{
+        db.query('SELECT id,name,email,contact,address from users WHERE isAdmin = 0',[], async(error,users) => { //we are suing async due to password await code
+             if(error){
+                    console.log(error);
+             }
+             else{
+                 res.send({
+                    users
+                 })
+             }
+        })
     }
+    catch(error){
+        console.log(error);
+    }
+}
+
+exports.delUser = async (req,res) =>{
+    const id = parseInt(req.params.userID);
+    console.log(id);
+    try{
+        const favourites = await delfavbyID(id);
+        const requests = await delReqbyID(id);
+        const images = await delImagesbyID(id);
+        const rooms = await delroombyID(id);
+        const users = await delUser(id);
+        res.send({
+            message: "Successfully Deleted",
+            
+        })
+        
+    }
+    catch(error){
+        console.log(error);
+    }
+}

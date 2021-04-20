@@ -81,6 +81,46 @@ exports.login= async (req,res) => {
 
     }
 
+    exports.adminlogin= async (req,res) => {
+        try{
+            
+            const {email,password} = req.body;
+            db.query('SELECT * from users WHERE email = ? and isAdmin=true', [email], async(error, results)=>{
+                if(results==0){
+                 return res.send({
+                        message: "Account doesnot exists."
+                    })
+                }
+    
+                if(!results || !(await bcrypt.compare(password,results[0].password))){
+                  return  res.send({
+                        message: "Incorrect email or password"
+                    })
+                }
+                else{
+                    const id= results[0].id.toString();
+                    const username= results[0].name
+    
+                    const token = jwt.sign({id},process.env.JWT_SECRET, {
+                        expiresIn: process.env.JWT_EXPIRES_IN //expiry time of token
+                    })
+                    res.send({
+                        id: id,
+                        name: username,
+                        token: token 
+                    })
+    
+                    
+    
+                }
+            })
+        }
+        catch(error){
+            console.log(error);
+        }
+    
+        }
+
 exports.getUsers=(req,res)=>{
     try{
         db.query('SELECT * from users',
