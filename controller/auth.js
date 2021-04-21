@@ -87,13 +87,13 @@ exports.login= async (req,res) => {
             const {email,password} = req.body;
             db.query('SELECT * from users WHERE email = ? and isAdmin=true', [email], async(error, results)=>{
                 if(results==0){
-                 return res.send({
+                 return res.status(500).send({
                         message: "Account doesnot exists."
                     })
                 }
     
                 if(!results || !(await bcrypt.compare(password,results[0].password))){
-                  return  res.send({
+                  return  res.status(500).send({
                         message: "Incorrect email or password"
                     })
                 }

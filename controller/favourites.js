@@ -1,11 +1,10 @@
 const db = require("../database");
 const { getFavRoombyUserID } = require('../services/favRoomDao');
-const { getRoombyID } = require('../services/PropertyDao');
+const { getRoombyID } = require('../services/roomsDao');
 const { getUser } = require("../services/userDao");
 
 
 exports.favRooms = (req, res) => {
-    // console.log("Room");
     var roomid = req.params.roomId
     var userid = req.params.userId;
     try {
@@ -63,21 +62,13 @@ exports.removeFav = (req, res) => {
                 })
             }
             if (results) {
-                // db.query('UPDATE rooms SET favStatus = ? WHERE RoomId = ? AND UserId=?', ["false", roomid, userid], (error, results) => {
-                //     if (error) {
-                //         res.send({
-                //             error: error,
-                //             message: "Error occured"
-                //         })
-                //     }
-                // else {
+                
                 res.send({
                     message: "Successfully Removed from Cart",
                     success: true,
                     data: results
                 })
-                // }
-                // })
+               
             }
 
         })
@@ -100,8 +91,10 @@ exports.getFavDetails = async (req, res) => {
     else{
     for (let index = 0; index < rooms.length; index++) {
         var roomdetails = await getRoombyID(rooms[index].RoomID)
-        var user = await getUser(roomdetails[0].userId)
-        var roomdetail = roomdetails[0];
+        var user = await getUser(roomdetails[0].userId) // using userId of room to get user
+        var roomdetail = roomdetails[0]; //storing in var
+        const thumb_Img = 'http://10.0.2.2:5000/static/'+roomdetails[0].thumb_Img;
+        roomdetail.thumb_Img =thumb_Img;
         roomdetail.userDetails = user[0]
         results.push(roomdetail);
 
@@ -111,6 +104,7 @@ exports.getFavDetails = async (req, res) => {
         // success: true,
         data: results 
     })
+    console.log(results);
 }
     
 }

@@ -1,9 +1,9 @@
 const db = require('../database');
 const { deleteFavRoom } = require('../services/favRoomDao');
 const { delImage } = require('../services/ImageDao');
-const { getImageData, getRoom, searchRoom, getRoomByUserID } = require('../services/PropertyDao.js');
+const { getImageData, getRoom, searchRoom, getRoomByUserID } = require('../services/roomsDao.js');
 const { delRequest } = require('../services/services');
-const { getUser } = require('../services/userDao');
+const { getUser, delroomImgbyID, delroombyID } = require('../services/userDao');
 
 
 
@@ -113,9 +113,11 @@ exports.getRoomsByUserId = async (req, res) => {
     else {
         for (let index = 0; index < rooms.length; index++) {
             const room = rooms[index];
+            const thumb_Img = 'http://10.0.2.2:5000/static/'+room.thumb_Img;
+            room.thumb_Img =thumb_Img;
             const images = await getImageData(room.RoomId);
             const imageUrls = images.map(image => {
-                return `http://10.0.2.2:5000/multipropertyimage/${image.image}`;
+                return `http://10.0.2.2:5000/static/${image.image}`;
             });
             room.images = imageUrls;
             const user = await getUser(room.userId);
@@ -131,11 +133,8 @@ exports.getRoomsByUserId = async (req, res) => {
 exports.updateRoomById = (req, res) => {
     const roomid = parseInt(req.params.roomID);
     const userid = parseInt(req.params.userID);
-    // console.log(userid);
-    // console.log(roomid);
-    const { roomTitle, roomno, description, address, price, parking, bathroom, latitude, longitude } = req.body;
-    // console.log("Latitude"+latitude);
 
+    const { roomTitle, roomno, description, address, price, parking, bathroom, latitude, longitude } = req.body;
     try {
         db.query(`UPDATE rooms SET roomTitle = ?, roomno = ?, description = ?, address = ?, price = ?, parking = ?, bathroom = ?, Latitude = ?, Longitude = ? WHERE RoomId = ? AND userId=?`,
             [
@@ -211,11 +210,15 @@ exports.getRoomDetail = async (req, res) => {
         });
     }
     else {
+
         for (let index = 0; index < properties.length; index++) {
             const property = properties[index];
+            const thumb_Img = 'http://10.0.2.2:5000/static/'+property.thumb_Img;
+            property.thumb_Img =thumb_Img;
+            //multiple images 
             const images = await getImageData(property.RoomId);
             const imageUrls = images.map(image => {
-                return `http://10.0.2.2:5000/multipropertyimage/${image.image}`;
+                return `http://10.0.2.2:5000/static/${image.image}`;
             });
             property.images = imageUrls;
             const user = await getUser(property.userId);
@@ -225,6 +228,7 @@ exports.getRoomDetail = async (req, res) => {
         res.send({
             data: results
         })
+        console.log(results);
     }
 }
 
@@ -232,9 +236,11 @@ exports.getRoomDetail = async (req, res) => {
 exports.delRoom = async (req, res) => {
     const userId = req.params.userID;
     const roomId = req.params.roomID;
+    const img = await delroombyID(userId);
     const images = await delImage(userId, roomId);
     const request = await delRequest(userId, roomId);
     const favrooms = await deleteFavRoom(roomId);
+    
 
     db.query("DELETE from rooms where userId = ? AND RoomId = ?", [userId, roomId], (error, results) => {
         if (error) {
@@ -303,9 +309,11 @@ exports.getSearchedRoom = async (req, res) => {
     else {
         for (let index = 0; index < properties.length; index++) {
             const property = properties[index];
+            const thumb_Img = 'http://10.0.2.2:5000/static/'+property.thumb_Img;
+            property.thumb_Img =thumb_Img
             const images = await getImageData(property.RoomId);
             const imageUrls = images.map(image => {
-                return `http://10.0.2.2:5000/multipropertyimage/${image.image}`;
+                return `http://10.0.2.2:5000/static/${image.image}`;
             });
             property.images = imageUrls;
             const user = await getUser(property.userId);

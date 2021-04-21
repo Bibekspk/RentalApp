@@ -6,10 +6,9 @@ const { updateImages } = require("../services/ImageDao");
 function singleImg(req, res) {
     var fileInfo = req.file;
     var roomId = req.params.roomId;
-    // console.log("Roomid"+roomId)
-    // console.log("Single File",fileInfo);
+
     if (req.file.filename) {
-        var imgUrl = 'http://10.0.2.2:5000/static/' + fileInfo.filename;
+        var imgUrl =  fileInfo.filename;
         db.query(`UPDATE rooms SET thumb_Img = ? WHERE RoomId = ?`, [imgUrl, roomId], (error, results) => {
             if (error) {
                 res.status(500).json({
@@ -37,7 +36,7 @@ function multipleImg(req, res) {
     if (fileInfo.length > 0) {
         for (i = 0; i < fileInfo.length; i++) {
             const element = fileInfo[i];
-            var imgUrl = 'http://10.0.2.2:5000/static/' + element.filename;
+            var imgUrl =  element.filename;
             db.query(`INSERT INTO IMAGE (roomId,userId,image) VALUES(?,?,?)`, [
                 roomId, userId, imgUrl
             ], (error, results) => {
@@ -62,14 +61,14 @@ function multipleImg(req, res) {
     }
 }
 
- function updatemultipleImage (req, res) {
+function updatemultipleImage(req, res) {
     var fileInfo = req.files;
     var userId = req.params.userId;
     var roomId = req.params.roomId;
-    console.log("userID"+userId);
-    console.log("roomID  "+userId);
-    
-    db.query('DELETE FROM IMAGE WHERE userId = ? AND roomId =?', [userId,roomId], (error, results) => {
+    console.log("userID" + userId);
+    console.log("roomID  " + userId);
+
+    db.query('DELETE FROM IMAGE WHERE userId = ? AND roomId =?', [userId, roomId], (error, results) => {
         if (error) {
             res.send({
                 success: false,
@@ -80,26 +79,13 @@ function multipleImg(req, res) {
             if (fileInfo.length > 0) {
                 for (i = 0; i < fileInfo.length; i++) {
                     const element = fileInfo[i];
-                    var imgUrl = 'http://10.0.2.2:5000/static/' + element.filename;
-                    const images = updateImages(roomId,userId,imgUrl);
-                    // db.query(`INSERT INTO IMAGE (roomId,userId,image) VALUES(?,?,?)`, [
-                    //     roomId, userId, imgUrl
-                    // ], (error, results) => {
-                    //     if (error) {
-                    //         res.send({
-                    //             success: false,
-                    //             message: "Error occured"
-                    //         })
-                    //     }
-                    //     res.send({
-                    //         success: true,
-                    //         message: "Successfully Added"
-                    //     })
-                    // })
+                    var imgUrl =  element.filename;
+                    const images = updateImages(roomId, userId, imgUrl);
+
                     res.send({
-                                success: true,
-                                message: "Successfully Added"
-                            })
+                        success: true,
+                        message: "Successfully Added"
+                    })
                 }
             }
             else {
@@ -109,8 +95,8 @@ function multipleImg(req, res) {
                 })
             }
         }
-    } )
- }    
+    })
+}
 
 
 function getImage(req, res) {
