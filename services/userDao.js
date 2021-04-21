@@ -16,18 +16,19 @@ function getUser(id){
 
 function delroombyID(userID){
     return new Promise((resolve,reject)=>{
-        db.query('SELECT thumbImg FROM rooms where userId =? ',[userID],(error,results)=>{
+        db.query('SELECT thumb_Img FROM rooms where userId =? ',[userID],(error,results)=>{
             if(results){
                const image = results.thumb_Img
-                fs.unlink(`uploads/${image}`);
-                db.query('DELETE FROM rooms where userId =? ',[userID],(error,results)=>{
-                    if(error){
-                        resolve(resluts)
-                    }
-                    else{
-                        reject(error)
-                    }
-                })
+                fs.unlink(`uploads/${image}`,(error,results)=>{
+                    db.query('DELETE FROM rooms where userId =? ',[userID],(error,results)=>{
+                        if(error){
+                            resolve(resluts)
+                        }
+                        else{
+                            reject(error)
+                        }
+                    })
+                });
                 resolve(results)
             }
             else{
