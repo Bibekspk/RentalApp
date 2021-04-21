@@ -1,43 +1,54 @@
 import axios from "axios";
 import types from "../constants/userConstants";
 import { url } from "../api/server";
+import * as API from '../api/server'; 
+import { toast } from "react-toastify";
 
+
+const userLoginAction=(data)=>({
+  type: types.USER_LOGIN_SUCCESS,
+  payload: data
+})
+
+const userLoginFailAction=(error)=>({
+  type: types.USER_LOGIN_FAIL,
+  payload: error
+})
+
+const userlogoutAction=(data)=>({
+  type: types.USER_LOGOUT,
+  payload: data
+})
+
+const loadingAction=()=>({
+  type: types.USER_LOGIN_REQUEST,
+  
+})
 
 export const login = (user) => async (dispatch) => {
   try {
-    dispatch({
-      type: types.USER_LOGIN_REQUEST,
-    });
+    dispatch(loadingAction())
+    // const config = {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // };
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const { data } = await axios.post(
-      `${url}/adminlogin`,
-      user,
-      config
-    );
-    console.log(data)
-    const { id, token } = data;
+    const {id,token} = await API.login(user);
+    toast.success("Logged in Successfully");
     localStorage.setItem('token', token)
-
-    dispatch({
-      type: types.USER_LOGIN_SUCCESS,
-      payload: { id, token },
-    });
+    dispatch(userLoginAction({id,token}))
+   
   } catch (error) {
-    dispatch({
-      type: types.USER_LOGIN_FAIL,
-    });
+    dispatch(userLoginFailAction(error));
+    toast.error("Invalid credentails");
   }
 };
 
 export const logout = () => (dispatch) => {
-  dispatch({
-    type: types.USER_LOGOUT,
-  });
+  toast.info("Logged out successfully");
+ dispatch(userlogoutAction());
+ 
 };
 
 export const register = (data) => async (dispatch) => {

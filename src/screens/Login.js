@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../actions/userActions";
 import Navbarheader from "../components/Navbar";
-// import Select from "react-select";
+import 'react-toastify/dist/ReactToastify.css';
 import "../assets/styles/OrgLogin.scss";
+import { ToastContainer } from "react-toastify";
 
 /**
  * @author
@@ -91,6 +92,7 @@ const OrgLogin = () => {
         </Row>
 
       </div>
+      <ToastContainer position='top-center'></ToastContainer>
     </>
   );
 };

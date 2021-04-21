@@ -12,3 +12,4 @@ const config = {
 
 export const getUsers = () =>  axios.get(url + `/getUsersInfo`, config) ;
 export const delUser = (id) =>  axios.delete(url + `/delUser/${id}`, config) ;
+export const login = (user) =>  axios.post(url + `/adminlogin`,user, config,) ;
