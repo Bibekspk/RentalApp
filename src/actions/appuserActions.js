@@ -43,11 +43,12 @@ export const delUser= (id) => async(dispatch) =>{
        
         const {data} =await API.delUser(id) //passing id into deluser api to pass to backend  
         dispatch(delUserAction())
+        toast.success("Successfully Deleted From the System");
        
     }
     catch(error){
         dispatch(delUserActionFail(error))
-        toast.error("Couldnot delete data the user")
+        // toast.error("Couldnot delete data the user")
     }
   
 }
