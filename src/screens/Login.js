@@ -66,26 +66,11 @@ const OrgLogin = () => {
                     <Form.Check type="checkbox" label="Remember me" />
                   </Form.Group>
                 </Col>
-
-                <Col md={6} sm={12} xs={12}>
-                  <p>
-                    <Link className="text-color">
-                      <i>Forgot your password?</i>
-                    </Link>
-                  </p>
-                </Col>
               </Row>
               <Button variant="primary" type="submit">
                 SIGN IN
               </Button>
-              <Row>
-                <Col className="my-3">
-                  <strong className="text-center-3">Not a member ? </strong>
-                  <Link to="/">
-                    Register
-                  </Link>
-                </Col>
-              </Row>
+
             </Form>
           </Col>
           <Col sm={0} md={3} lg={3} xl={3}></Col>

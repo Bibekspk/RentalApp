@@ -1,14 +1,18 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { Form, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Sidebar from '../components/Sidebar';
 import { ToastContainer, toast } from 'react-toastify';
 import AdminNavBar from '../components/AdminNavBar';
+import {  getUser } from '../actions/appuserActions';
 
 
 
 const AdminPanel = () => {
     const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getUser());
+    }, [])
     const userinfo = useSelector(state => state.userData?.user);
 
     return (
