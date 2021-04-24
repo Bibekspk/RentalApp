@@ -1,7 +1,7 @@
 const db = require('../database');
 const { deleteFavRoom } = require('../services/favRoomDao');
 const { delImage } = require('../services/ImageDao');
-const { getImageData, getRoom, searchRoom, getRoomByUserID } = require('../services/roomsDao.js');
+const { getImageData, getRoom, searchRoom, getRoomByUserID, approveStatus } = require('../services/roomsDao.js');
 const { delRequest } = require('../services/services');
 const { getUser, delroomImgbyID, delroombyID } = require('../services/userDao');
 
@@ -10,11 +10,11 @@ const { getUser, delroomImgbyID, delroombyID } = require('../services/userDao');
 
 exports.addRoom = (req, res) => {
     const id = req.params.userId
-    const { roomTitle, roomno, description, address, price, parking, bathroom, latitude, longitude } = req.body;
+    const { roomTitle, roomno, description, address, price, parking, bathroom, latitude, longitude,approveStatus } = req.body;
     console.log(req.body) //storing all the value from form to varialbes
     try {
         db.query("INSERT INTO rooms SET ?",
-            { userId: id, roomTitle: roomTitle, roomno: roomno, description: description, address: address, price: price, parking: parking, bathroom: bathroom, Latitude: latitude, Longitude: longitude }, (error, results) => {
+            { userId: id, roomTitle: roomTitle, roomno: roomno, description: description, address: address, price: price, parking: parking, bathroom: bathroom, Latitude: latitude, Longitude: longitude,ApproveStatus: approveStatus }, (error, results) => {
                 if (error) {
                     return res.send({
                         success: false,
@@ -63,6 +63,26 @@ exports.getRoom = (req, res) => {
         }
 
         )
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+exports.approveRoom = (req, res) => {
+    const id = req.params.RoomID;
+    try {
+       const approve = approveStatus(id, function(error,done){
+           if(error){
+               console.log("Error occured")
+           }
+           else{
+               res.send({
+                   status: "Approved"
+               })
+           }
+       })
+       console.log(approve);
     }
     catch (error) {
         console.log(error);

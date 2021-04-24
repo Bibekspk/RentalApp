@@ -78,8 +78,24 @@ function getRoom ()  {
     })}
 }
 
+function approveStatus (roomId, callBack)  {
+  db.query(`UPDATE rooms SET ApproveStatus = ? WHERE RoomId = ?`,
+      [
+        "true",
+          roomId
+      ],
+      (error, results) => {
+          if (error) {
+              return callBack(error);
+          }
+          console.log('Data succesfully stored');
+          return callBack(null, results);
+      });
+} 
+
   module.exports = {
     getRoom,
+    approveStatus,
     getImageData,
     getRoombyID,
     searchRoom,
