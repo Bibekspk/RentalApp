@@ -23,7 +23,7 @@ export const SidebarData = [
   },
   {
     title: 'Rooms',
-    path: '/user/rooms',
+    path: '/rooms',
     icon: <Building />,
     cName: 'nav-text'
   },

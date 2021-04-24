@@ -17,8 +17,28 @@ const getUserActionFail =(error)=>({
     type: types.USER_GET_FAIL,
     payload: error
 })
+
 const delUserActionFail =(error)=>({
     type: types.USER_DEL_FAIL,
+    payload: error
+})
+
+const getRoomAction =(data)=>({
+    type: types.ROOM_GET_SUCCESS,
+    payload: data
+})
+
+const getRoomActionFail =(error)=>({
+    type: types.ROOM_GET_FAIL,
+    payload: error
+})
+
+const approveRoomAction =()=>({
+    type: types.APPROVE_ROOM_SUCCESS,
+})
+
+const approveRoomFilAction =(error)=>({
+    type: types.APPROVE_ROOM_FAIL,
     payload: error
 })
 
@@ -44,11 +64,41 @@ export const delUser= (id) => async(dispatch) =>{
         const {data} =await API.delUser(id) //passing id into deluser api to pass to backend  
         dispatch(delUserAction())
         toast.success("Successfully Deleted From the System");
-       
     }
     catch(error){
         dispatch(delUserActionFail(error))
-        // toast.error("Couldnot delete data the user")
+
+    }
+  
+}
+
+export const getRooms= () => async(dispatch) =>{
+  
+    try{
+        const {data} =await API.getRooms();  
+
+        console.log(data.data);
+        dispatch(getRoomAction(data.data));
+
+    }
+    catch(error){
+        dispatch(getRoomActionFail(error))
+        toast.error("Couldnot get data from db")
+    }
+  
+}
+export const approveRoom= (id) => async(dispatch) =>{
+  
+    try{
+        const {data} =await API.approveRoom(id);  
+        // const users = data.users
+        console.log(data);
+        dispatch(approveRoomAction(data));
+        toast.success("Successfully Approved");
+    }
+    catch(error){
+        dispatch(approveRoomFilAction(error))
+        // toast.error("Couldnot get data from db")
     }
   
 }
