@@ -41,6 +41,7 @@ function addMainImageName (roomId, imageName, callBack)  {
 }
 
 
+
 function delRequest(userId,roomId){
     return new Promise((resolve,reject)=>{
         db.query('DELETE from request WHERE UserID = ? AND RoomID =?',[userId,roomId],(error,results)=>{
