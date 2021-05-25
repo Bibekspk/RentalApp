@@ -5,6 +5,7 @@ const requestController  = require('../../controller/requestForVisit');
 const router = express.Router();
 
 router.post("/:roomId/visitRequest/:userId",  requestController.siteVisitRequest);
+router.get("/getRequests",  requestController.getRequests);
 
 module.exports = router;
 
