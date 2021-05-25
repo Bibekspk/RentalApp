@@ -5,6 +5,7 @@ import Landing from "../screens/Landing";
 import AdminPanel from "../screens/AdminPanel";
 import UserInfo from "../screens/userInfo";
 import RoomInfo from "../screens/roomInfo";
+import Request from "../screens/Request";
 import ProtectedRoute from "./Protectedroute";
 
 
@@ -18,6 +19,7 @@ const AppRouting = () => {
         <ProtectedRoute  path="/admin" component={AdminPanel} />
         <ProtectedRoute  path="/users" component={UserInfo} />
         <ProtectedRoute  path="/rooms" component={RoomInfo} />
+        <ProtectedRoute  path="/request" component={Request} />
 
        
         

@@ -18,6 +18,19 @@ export const userData = (state = {}, action) => {
                 loading: false,
                 rooms: action.payload
             }
+        case types.REQUEST_GET_FAIL:
+            return {
+                ...state,
+                loading: false,
+
+            }
+        case types.REQUEST_GET_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                requests: action.payload
+            }
+
         case types.APPROVE_ROOM_SUCCESS:
             return {
                 ...state,

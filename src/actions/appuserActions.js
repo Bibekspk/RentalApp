@@ -1,5 +1,5 @@
-import types from '../constants/userConstants';
-import * as API from '../api/server';
+import types from '../constants/userConstants'; // importing constants naming as types
+import * as API from '../api/server'; // * is to exoprt all which were exported from the file.
 import {toast} from 'react-toastify';
 
 
@@ -41,6 +41,18 @@ const approveRoomFilAction =(error)=>({
     type: types.APPROVE_ROOM_FAIL,
     payload: error
 })
+
+const getRequestActionFail =(error)=>({
+    type: types.REQUEST_GET_FAIL,
+    payload: error
+})
+
+const getRequestAction =(data)=>({
+    type: types.REQUEST_GET_SUCCESS,
+    payload: data
+})
+
+
 
 export const getUser= () => async(dispatch) =>{
   
@@ -101,4 +113,16 @@ export const approveRoom= (id) => async(dispatch) =>{
         // toast.error("Couldnot get data from db")
     }
   
+}
+
+export const getRequest= ()=> async(dispatch) =>{
+    try{
+        const {data} = await API.getRequest();
+        console.log(data);
+        dispatch(getRequestAction(data))
+    }
+    catch(error){
+        dispatch(getRequestActionFail(error))
+    }
+
 }
