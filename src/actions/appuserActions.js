@@ -52,6 +52,16 @@ const getRequestAction =(data)=>({
     payload: data
 })
 
+const approveRequestActionFail =(error)=>({
+    type: types.APPROVE_REQUEST_FAIL,
+    payload: error
+})
+
+const approveRequestAction =(data)=>({
+    type: types.APPROVE_REQUEST_SUCCESS,
+    payload: data
+})
+
 
 
 export const getUser= () => async(dispatch) =>{
@@ -120,9 +130,24 @@ export const getRequest= ()=> async(dispatch) =>{
         const {data} = await API.getRequest();
         console.log(data);
         dispatch(getRequestAction(data))
+        
     }
     catch(error){
         dispatch(getRequestActionFail(error))
     }
 
+}
+
+export const approveRequest=(reqData) => async(dispatch)=>{
+    try{
+        const {data} = await API.approveRequest(reqData); 
+        dispatch(approveRequestAction(data))
+        console.log(reqData);
+        toast.success(data.message);
+    }
+    catch(error){
+        dispatch(approveRequestActionFail(error))
+        toast.error("Couldnot approve the request due to some internal error")
+
+    }
 }

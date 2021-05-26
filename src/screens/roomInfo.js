@@ -34,9 +34,9 @@ const RoomInfo = () => {
                         <div className="main-div" id="main-color">
                             <Col className="mt-1" xs={12} sm={12} md={12} lg={12}>
                                 <h2 className='mt-2 mb-3'><strong> ROOMS INFORMATION </strong></h2>
-                                <div className="" sm={12} md={12} lg={12}>
-
-                                    <Table  className="table table-lg table-dark">
+                                <div  sm={12} md={12} lg={12}>
+                                    <div >
+                                    <Table style={{overflowX:'visible'}} className="table table-lg table-dark">
 
                                         <thead>
                                             <tr>
@@ -78,6 +78,7 @@ const RoomInfo = () => {
 
                                         </tbody>
                                     </Table>
+                                    </div>
                                 </div>
 
                             </Col>

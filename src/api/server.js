@@ -15,4 +15,5 @@ export const delUser = (id) =>  axios.delete(url + `/api/delUser/${id}`, config)
 export const login = (user) =>  axios.post(url + `/api/adminlogin`,user, config) ;
 export const getRooms = () =>  axios.get(url + `/v1/getRoomDetail`, config);
 export const getRequest = () => axios.get(url+ '/v3/getRequests',config);
+export const approveRequest = (information) =>  axios.put(url + `/v3/approveRequest`,information, config) ;
 export const approveRoom = (id) =>  axios.post(url + `/v1/approveRoom/${id}`, config);

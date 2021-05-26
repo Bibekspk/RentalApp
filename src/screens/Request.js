@@ -1,25 +1,44 @@
 import React, { useEffect,useState } from 'react'
-import { Form, Row, Col, Table,Button, Container } from 'react-bootstrap';
+import { Form, Row, Col, Table,Button, Modal, ModalFooter } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Sidebar from '../components/Sidebar';
 import { ToastContainer } from 'react-toastify';
 import AdminNavBar from '../components/AdminNavBar';
-import { getRequest } from '../actions/appuserActions';
+import { approveRequest, getRequest } from '../actions/appuserActions';
 
 
 const RequestInfo = () => {
-    // const [userID,setUserID] =useState("");
     const dispatch = useDispatch();
     const requests = useSelector(state => state.userData?.requests?.data);
-
     useEffect(() => {
         dispatch(getRequest());
     }, []);
 
-    const handleClick=(id)=>{
-        // setUserID(id);
-        // console.log(userID);
-        // dispatch(delUser(userID));
+    const [show, setShow] = useState(false);
+    const [requestData, setRequestData] = useState({});
+    
+
+    const handleClick=(e)=>{
+        const reqData = {
+            RequestID : e.RequestID,
+            DateforVisit: e.DateforVisit,
+            ownerMail : e.roominfo.hostUser.email,
+            ownername : e.roominfo.hostUser.name,
+            ownercontact: e.roominfo.hostUser.contact,
+            requestorEmail : e.requestor.email,
+            requestorName : e.requestor.name,
+            requestorContact : e.requestor.contact,
+            roomAddress: e.roominfo.address,
+            roomInfo: e.roominfo.price
+        }
+        setRequestData(reqData);
+        setShow(true);
+    }
+
+    const handleApprove=()=>{
+        setShow(false);
+        console.log(requestData);
+        dispatch(approveRequest(requestData));
     }
     
 
@@ -34,9 +53,9 @@ const RequestInfo = () => {
                         <div className="main-div" id="main-color">
                             <Col className="mt-1" xs={12} sm={12} md={12} lg={12}>
                                 <h2 className='mt-2 mb-3'><strong> USER INFORMATION </strong></h2>
-                                <div className="" sm={12} md={12} lg={12}>
-                                    <Container>
-                                    <Table  className="table table-lg table-dark">
+                                <div style={{overflowX:'auto'}} className="" sm={12} md={12} lg={12}>
+                                    
+                                    <Table  className="table table-lg table-dark ">
 
                                         <thead>
                                             <tr>
@@ -62,7 +81,7 @@ const RequestInfo = () => {
                                                         <td className="text-center" >{item.DateforVisit}</td>
                                                         <td className="text-center" >{item.roominfo.hostUser.name}</td>
                                                         <td className="text-center" >{item.requestor.name}</td>
-                                                        <td><Button onClick={()=>handleClick(item.id)}  variant="success">Approve</Button></td>
+                                                        <td><Button onClick={()=>handleClick(item)}  variant="success">Approve</Button></td>
                                                     </tr>
                                                 )
 
@@ -71,7 +90,22 @@ const RequestInfo = () => {
 
                                         </tbody>
                                     </Table>
-                                    </Container>
+                                    <Modal show={show}>
+                                        <Modal.Header  style={{color:'black'}}>
+                                            <Modal.Title>Room Request Action</Modal.Title>
+                                        </Modal.Header>
+
+                                        <Modal.Body style={{color:'black'}}>
+                                         Do you want to approve request and send mail to the owner and RoomSeeker  
+                                        </Modal.Body>
+
+                                        <ModalFooter>
+                                            <Button onClick={handleApprove} variant="success">Approve</Button>
+                                            <Button onClick={()=>setShow(false)} variant="danger">Close</Button>
+                                        </ModalFooter>
+
+                                    </Modal>
+                                   
                                 </div>
 
                             </Col>
