@@ -1,4 +1,5 @@
 const db = require("../database");
+const { sendMailfucntion } = require("../helpers/nodemailer");
 const { getUserInfo, getRoomInfo } = require("../services/visitRequest");
 
 exports.siteVisitRequest = (req, res) => {
@@ -67,6 +68,43 @@ exports.getRequests =  (req, res) => {
                 })
             }
         })
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+exports.approveVisit = (req, res) => {
+
+    const visitInfo = req.body
+    try {
+        db.query(
+            "UPDATE request SET ApprovedStatus = ? WHERE RequestID=?", ['true',visitInfo.RequestID]
+            , (error, results) => {
+                if (error) {
+                    res.send({
+                        error: error,
+                        message: "Error occured"
+                    })
+                }
+                else {
+                    sendMailfucntion(visitInfo,(error,done)=>{
+                        if(error){
+                            return res.send({
+                                message: "Mail couldnot be sent",
+                                error: error
+                            })
+                        }
+                        else{
+                            res.send({
+                                message: "Successfully Approved and Mail have been send to Owner and RoomSeeker.",
+                                success: true,
+                            })
+                        }
+                    })
+                  
+                }
+            })
     }
     catch (error) {
         console.log(error);

@@ -3,7 +3,7 @@ const db = require('../database')
 function getUserInfo(userId){
    
     return new Promise((resolve,reject)=>{
-        db.query("SELECT name,email from users where id=?",[userId],(err,user)=>{
+        db.query("SELECT name,email,contact from users where id=?",[userId],(err,user)=>{
             if(user){
                  resolve(user[0])
             }
@@ -22,7 +22,7 @@ function getRoomInfo(RoomId){
             if(room){
                 console.log("Room");
                 console.log(room)
-                db.query("SELECT name,email from users where id=?",[room[0].userId],(err,user)=>{
+                db.query("SELECT name,email,contact from users where id=?",[room[0].userId],(err,user)=>{
                     if(user){
                         room[0].hostUser = user[0]
                          resolve(room[0])
@@ -43,5 +43,6 @@ function getRoomInfo(RoomId){
 
 module.exports= {
     getUserInfo,
-    getRoomInfo
+    getRoomInfo,
+
 }
